@@ -1,13 +1,13 @@
 import os
+import uuid
 
 import torch
 import typer
+from qdrant_client import QdrantClient
+from qdrant_client.http import models as rest
 from rich.console import Console
 from rich.panel import Panel
 from spinner import BeeStatus
-from qdrant_client import QdrantClient
-from qdrant_client.http import models as rest
-import uuid
 
 client = QdrantClient(path="./db")
 
@@ -58,6 +58,7 @@ def search(query: str):
         status.update(f"Searching paragraphs for '[bold]{query}[/bold]'...")
 
         from sentence_transformers import SentenceTransformer
+
         model = SentenceTransformer("msmarco-distilbert-base-dot-prod-v3")
 
         # get the text embeddings for the query and the data
@@ -66,12 +67,12 @@ def search(query: str):
             text_embeddings = torch.tensor(text_embeddings).numpy().tolist()
 
         response = client.search(
-            collection_name="paragraphs",
-            query_vector=text_embeddings,
-            limit=3
+            collection_name="paragraphs", query_vector=text_embeddings, limit=3
         )
 
-        search_results = [{**res.payload, "match_score": res.score * 100} for res in response]
+        search_results = [
+            {**res.payload, "match_score": res.score * 100} for res in response
+        ]
 
     # show results
     if len(search_results) == 0:
@@ -110,6 +111,7 @@ def add(path: str):
     :return:
     """
     from sentence_transformers import SentenceTransformer
+
     model = SentenceTransformer("msmarco-distilbert-base-dot-prod-v3")
 
     if os.path.isfile(path):
@@ -121,14 +123,14 @@ def add(path: str):
                 paragraph
                 for paragraph in paragraphs
                 if len(paragraph) > 250
-                   and not paragraph.startswith("!")
-                   and not paragraph.startswith("http")
-                   and not paragraph.startswith("    ")
-                   and not paragraph.startswith("#")
-                   and not paragraph.startswith("$")
-                   and not paragraph.startswith("<")
-                   and not paragraph.startswith("[")
-                   and not paragraph.startswith("---")
+                and not paragraph.startswith("!")
+                and not paragraph.startswith("http")
+                and not paragraph.startswith("    ")
+                and not paragraph.startswith("#")
+                and not paragraph.startswith("$")
+                and not paragraph.startswith("<")
+                and not paragraph.startswith("[")
+                and not paragraph.startswith("---")
             ]
 
             with torch.no_grad():
@@ -143,7 +145,10 @@ def add(path: str):
                 points=rest.Batch(
                     ids=file_ids,
                     vectors=text_embeddings,
-                    payloads=[{"filename": path, "body": paragraph} for paragraph in paragraphs],
+                    payloads=[
+                        {"filename": path, "body": paragraph}
+                        for paragraph in paragraphs
+                    ],
                 ),
             )
 
@@ -161,6 +166,7 @@ def init():
         collection_name="paragraphs",
         vectors_config=rest.VectorParams(size=768, distance=rest.Distance.COSINE),
     )
+
 
 @app.command()
 def check():

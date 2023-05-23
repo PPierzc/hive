@@ -6,6 +6,10 @@
     <b>Unleash the power of Hive and navigate your knowledge base like a busy bee!  🐝🔍✨</b>
 </p>
 
+<p align="center">
+<a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Black Code Style"></a>
+</p>
+
 🐝 Hive is a CLI tool for semantic searching of your knowledge base 📚. It allows you to easily search through your collection of files and directories, extracting meaningful information based on your prompts.
  No more searching through haystacks—let Hive find the golden honey! 🍯🐝 Embrace the buzz and let your knowledge thrive! 🚀💡
 
