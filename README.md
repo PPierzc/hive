@@ -9,7 +9,7 @@
 <p align="center">
 <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Black Code Style"></a>
 <a href="https://pypi.python.org/pypi/hive/"><img src="https://img.shields.io/pypi/dm/hive.svg" alt="Downloads"></a>
-<a href="https://github.com/ppierzc/hive/blob/master/LICENSE"><img src="https://img.shields.io/github/license/ppierzc/hive.svg" alt="License"></a>
+<a href="https://github.com/ppierzc/hive/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
 <a href="https://https://discord.com/"><img src="https://badgen.net/badge/icon/discord?icon=discord&label" alt="License"></a>
 </p>
 
