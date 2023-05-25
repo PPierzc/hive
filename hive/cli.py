@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
+import hashlib
 import os
-import uuid
 
 import torch
 import typer
@@ -10,10 +10,10 @@ from rich.console import Console
 from rich.panel import Panel
 from sentence_transformers import SentenceTransformer
 
-from hive.parsers import parse_markdown
+from hive.parsers import parse_markdown, parse_pdf
 from hive.spinner import BeeStatus
 
-client = QdrantClient(path="./db")
+client = QdrantClient(path=os.path.expanduser("~") + "/.hive/db")
 
 app = typer.Typer()
 console = Console()
@@ -53,7 +53,7 @@ def search(query: str):
 
     for item in search_results:
         title = f"[bold]{item['filename']}[/bold]"
-        body = f"{item['body']}"
+        body = f"{item['body'][:500]}{'...' if len(item['body']) > 500 else ''}"
         match_score = f"[dim]Match score: {item['match_score']:.0f}%[/dim]"
 
         panel = Panel(
@@ -68,7 +68,6 @@ def search(query: str):
             border_style="#ffa908",
         )
         console.print(panel)
-        # add a line break
         console.print()
 
 
@@ -84,32 +83,37 @@ def add(path: str):
 
     if os.path.isfile(path):
         console.print(f"Adding file: {path}", style="#ffa908")
-        with open(path, "r") as f:
-            body = f.read()
-            paragraphs = parse_markdown(body)
 
-            with torch.no_grad():
-                text_embeddings = model.encode(paragraphs)
-                text_embeddings = torch.tensor(text_embeddings).numpy().tolist()
+        if path.endswith(".pdf"):
+            paragraphs = parse_pdf(path)
+        elif path.endswith(".md"):
+            paragraphs = parse_markdown(path)
+        else:
+            console.print(f"Invalid file type: {path}", style="#ffa908")
+            return
 
-            # generate a unique uuid for the file
-            file_ids = [str(uuid.uuid4()) for _ in range(len(paragraphs))]
+        with torch.no_grad():
+            text_embeddings = model.encode(paragraphs)
+            text_embeddings = torch.tensor(text_embeddings).numpy().tolist()
 
-            client.upsert(
-                collection_name="paragraphs",
-                points=rest.Batch(
-                    ids=file_ids,
-                    vectors=text_embeddings,
-                    payloads=[
-                        {"filename": path, "body": paragraph}
-                        for paragraph in paragraphs
-                    ],
-                ),
-            )
+        paragraph_ids = [
+            hashlib.md5(paragraph.encode()).hexdigest() for paragraph in paragraphs
+        ]
+
+        client.upsert(
+            collection_name="paragraphs",
+            points=rest.Batch(
+                ids=paragraph_ids,
+                vectors=text_embeddings,
+                payloads=[
+                    {"filename": path, "body": paragraph} for paragraph in paragraphs
+                ],
+            ),
+        )
 
     elif os.path.isdir(path):
         for file in os.listdir(path):
-            if file.endswith(".md"):
+            if file.endswith(".md") or file.endswith(".pdf"):
                 add(os.path.join(path, file))
     else:
         console.print(f"Invalid path: {path}")

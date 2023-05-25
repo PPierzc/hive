@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hive"
+name = "hive-cli"
 version = "0.1.0"
 description = ""
 authors = ["paul <ppierzc@gmail.copm>"]
@@ -11,11 +11,11 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
 typer = {extras = ["all"], version = "^0.9.0"}
-transformers = "^4.29.2"
 torch = "^2.0.1"
 Pillow = "^9.5.0"
 sentence-transformers = "^2.2.2"
 qdrant-client = "^1.1.7"
+PyPDF2 = "^3.0.1"
 
 
 [build-system]

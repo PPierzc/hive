@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="175" src="./docs/logo.png" alt="Qdrant">
+  <img height="175" src="https://github.com/PPierzc/hive/blob/main/docs/logo.png" alt="Qdrant">
 </p>
 
 <p align="center">
@@ -8,9 +8,7 @@
 
 <p align="center">
 <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Black Code Style"></a>
-<a href="https://pypi.python.org/pypi/hive/"><img src="https://img.shields.io/pypi/dm/hive.svg" alt="Downloads"></a>
 <a href="https://github.com/ppierzc/hive/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
-<a href="https://https://discord.com/"><img src="https://badgen.net/badge/icon/discord?icon=discord&label" alt="License"></a>
 </p>
 
 🐝 Hive is a CLI tool for semantic searching of your knowledge base 📚. It allows you to easily search through your collection of files and directories, extracting meaningful information based on your prompts.
@@ -22,7 +20,7 @@
 You can install Hive using pip:
 
 ```shell
-pip install hive
+pip install hive-cli
 ```
 
 ### Initializing Hive
@@ -42,7 +40,7 @@ hive add <file_or_dir_to_add>
 This command allows Hive to index and analyze the content of the specified files or directories, making them searchable within your knowledge base.
 
 #### Supported File Types
-Hive currently supports only Markdown files. Support for other file types is coming soon!
+Hive currently supports only Markdown and PDF files. Support for other file types is coming soon!
 
 ### Searching the Knowledge Base
 To perform a semantic search within your knowledge base, use the search command along with your prompt:
