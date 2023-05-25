@@ -1,9 +1,9 @@
 <p align="center">
-  <img height="175" src="https://github.com/PPierzc/hive/blob/main/docs/logo.png" alt="Qdrant">
+  <img height="175" src="https://github.com/PPierzc/hive/blob/main/docs/logo.png" alt="Hive Logo">
 </p>
 
 <p align="center">
-    <b>Unleash the power of Hive and navigate your knowledge base like a busy bee!  🐝🔍✨</b>
+    <b>Navigate your knowledge base like a busy bee! 🐝🔍✨</b>
 </p>
 
 <p align="center">

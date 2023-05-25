@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hive-cli"
-version = "0.1.0"
+version = "0.2.1"
 description = ""
 authors = ["paul <ppierzc@gmail.copm>"]
 readme = "README.md"
