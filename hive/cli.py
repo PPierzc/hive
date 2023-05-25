@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import uuid
 
@@ -7,7 +8,10 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models as rest
 from rich.console import Console
 from rich.panel import Panel
-from spinner import BeeStatus
+from sentence_transformers import SentenceTransformer
+
+from hive.parsers import parse_markdown
+from hive.spinner import BeeStatus
 
 client = QdrantClient(path="./db")
 
@@ -43,7 +47,7 @@ def search(query: str):
         console.print(f"No results found for '{query}'")
         return
 
-    header = f"[bold]Search results for \"{query}\"[/bold]."
+    header = f'[bold]Search results for "{query}"[/bold].'
     console.print(header)
     console.print()
 
@@ -61,7 +65,7 @@ def search(query: str):
             expand=False,
             width=120,
             padding=(1, 2),
-            border_style="#ffa908"
+            border_style="#ffa908",
         )
         console.print(panel)
         # add a line break
@@ -75,28 +79,14 @@ def add(path: str):
     :param path: path to the file or directory
     :return:
     """
-    from sentence_transformers import SentenceTransformer
 
     model = SentenceTransformer("msmarco-distilbert-base-dot-prod-v3")
 
     if os.path.isfile(path):
-        console.print(f"Adding file: {path}", style='#ffa908')
+        console.print(f"Adding file: {path}", style="#ffa908")
         with open(path, "r") as f:
             body = f.read()
-            paragraphs = body.split("\n\n")
-            paragraphs = [
-                paragraph
-                for paragraph in paragraphs
-                if len(paragraph) > 250
-                and not paragraph.startswith("!")
-                and not paragraph.startswith("http")
-                and not paragraph.startswith("    ")
-                and not paragraph.startswith("#")
-                and not paragraph.startswith("$")
-                and not paragraph.startswith("<")
-                and not paragraph.startswith("[")
-                and not paragraph.startswith("---")
-            ]
+            paragraphs = parse_markdown(body)
 
             with torch.no_grad():
                 text_embeddings = model.encode(paragraphs)

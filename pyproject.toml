@@ -4,6 +4,9 @@ version = "0.1.0"
 description = ""
 authors = ["paul <ppierzc@gmail.copm>"]
 readme = "README.md"
+packages = [
+    { include = "hive" },
+]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
@@ -18,3 +21,6 @@ qdrant-client = "^1.1.7"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+hive = "hive.cli:app"
