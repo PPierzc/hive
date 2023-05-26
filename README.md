@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="175" src="https://github.com/PPierzc/hive/blob/main/docs/logo.png" alt="Hive Logo">
+  <img width="100%" src="https://github.com/PPierzc/hive/blob/main/docs/logo.png" alt="Hive Logo">
 </p>
 
 <p align="center">
